@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, viewport-fit=cover">
+<title>Кухонная тетрадь — Тесто подошло</title>
+<style>
+:root{
+  --paper:#FAF7EF;
+  --paper-2:#FFFDF7;
+  --rule:#C6D6DE;
+  --rule-soft:rgba(198,214,222,.55);
+  --margin:#C0443A;
+  --ink:#15304C;
+  --ink-2:#4A5F73;
+  --pencil:#8A96A1;
+  --edge:rgba(21,48,76,.14);
+  --shadow:0 1px 0 rgba(21,48,76,.06), 0 8px 24px -18px rgba(21,48,76,.5);
+  --serif:Georgia,"Noto Serif","Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --r:14px;
+}
+html[data-theme="dark"]{
+  --paper:#141B22;
+  --paper-2:#1B242D;
+  --rule:#2C3B47;
+  --rule-soft:rgba(96,124,143,.28);
+  --margin:#E0685C;
+  --ink:#E7EEF4;
+  --ink-2:#A9BAC7;
+  --pencil:#7A8B99;
+  --edge:rgba(231,238,244,.14);
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 8px 24px -18px #000;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.5;
+  -webkit-text-size-adjust:100%;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.app{max-width:720px;margin:0 auto;padding:0 14px 48px}
+
+/* ——— шапка ——— */
+header{padding:22px 2px 14px}
+.eyebrow{
+  font:600 11px/1 var(--sans);
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--margin);
+}
+h1{
+  font:400 30px/1.1 var(--serif);
+  margin:8px 0 4px;
+  letter-spacing:-.01em;
+}
+.sub{color:var(--ink-2);font-size:13.5px;margin:0}
+
+/* ——— закладки ——— */
+nav.tabs{
+  display:flex;gap:4px;
+  position:sticky;top:0;z-index:20;
+  padding:8px 0 10px;
+  background:linear-gradient(var(--paper) 72%,rgba(0,0,0,0));
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:0 0 auto;
+  appearance:none;border:1px solid var(--edge);
+  background:transparent;color:var(--ink-2);
+  font:600 13.5px/1 var(--sans);
+  padding:10px 15px;border-radius:11px 11px 4px 4px;
+  cursor:pointer;transition:background .15s,color .15s,border-color .15s;
+}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{
+  background:var(--paper-2);color:var(--ink);
+  border-color:var(--edge);border-bottom-color:transparent;
+  box-shadow:inset 0 3px 0 var(--margin);
+}
+.tab:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--margin);outline-offset:2px;
+}
+
+/* ——— лист ——— */
+.sheet{
+  background:var(--paper-2);
+  border:1px solid var(--edge);
+  border-radius:var(--r);
+  box-shadow:var(--shadow);
+  padding:18px 16px 18px 20px;
+  margin:0 0 14px;
+  position:relative;
+  overflow:hidden;
+}
+.sheet::before{
+  content:"";position:absolute;left:9px;top:0;bottom:0;width:1px;
+  background:var(--margin);opacity:.35;
+}
+.sheet h2{
+  font:400 19px/1.2 var(--serif);
+  margin:0 0 3px;
+}
+.sheet .hint{color:var(--ink-2);font-size:13px;margin:0 0 14px}
+
+/* ——— поля ——— */
+label.f{display:block;margin:0 0 4px;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--pencil);font-weight:600}
+input,select,textarea{
+  width:100%;
+  font:400 15px/1.35 var(--sans);
+  color:var(--ink);
+  background:var(--paper);
+  border:1px solid var(--edge);
+  border-radius:9px;
+  padding:10px 11px;
+}
+input[type=number]{font-family:var(--mono);letter-spacing:.02em}
+textarea{font-family:var(--mono);font-size:13.5px;line-height:1.65;min-height:170px;resize:vertical}
+.row{display:flex;gap:9px;flex-wrap:wrap}
+.fields{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.fld{display:flex;flex-direction:column;gap:3px;min-width:0}
+.fld>span{font:600 10.5px/1.2 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--pencil)}
+.fld input,.fld select{padding:9px 10px}
+.row>div{flex:1 1 0;min-width:92px}
+.grp{margin:0 0 13px}
+.seg{display:flex;gap:0;border:1px solid var(--edge);border-radius:9px;overflow:hidden}
+.seg button{
+  flex:1;appearance:none;border:0;background:transparent;
+  color:var(--ink-2);font:600 13px/1 var(--sans);
+  padding:10px 4px;cursor:pointer;
+}
+.seg button[aria-pressed="true"]{background:var(--margin);color:#fff}
+button.go{
+  appearance:none;border:0;border-radius:10px;
+  background:var(--ink);color:var(--paper-2);
+  font:600 15px/1 var(--sans);padding:14px 18px;width:100%;cursor:pointer;
+}
+button.go:active{transform:translateY(1px)}
+button.ghost{
+  appearance:none;background:transparent;border:1px solid var(--edge);
+  color:var(--ink);border-radius:10px;font:600 13.5px/1 var(--sans);
+  padding:11px 14px;cursor:pointer;
+}
+
+/* ——— схема форм ——— */
+.diagram{display:block;width:100%;height:auto;margin:2px 0 4px}
+.coef{
+  display:flex;align-items:baseline;gap:9px;
+  margin:6px 0 2px;padding:12px 14px;
+  border:1px solid var(--edge);border-radius:11px;
+  background:var(--paper);
+}
+.coef b{font:400 30px/1 var(--mono);color:var(--margin);letter-spacing:-.02em}
+.coef span{font-size:13px;color:var(--ink-2)}
+
+/* ——— результат ——— */
+.out{margin:14px 0 0}
+.out ul{list-style:none;margin:0;padding:0}
+.out li{
+  display:flex;gap:12px;align-items:baseline;
+  padding:7px 0;border-bottom:1px dashed var(--rule-soft);
+  font-size:15px;
+}
+.out li.plain{color:var(--ink-2);font-size:14px}
+.out li b{font:600 15px/1.3 var(--mono);color:var(--ink);white-space:nowrap;min-width:78px;text-align:right}
+.out li i{font-style:normal;flex:1}
+.note{
+  margin:12px 0 0;padding:11px 13px;border-left:3px solid var(--margin);
+  background:var(--paper);border-radius:0 9px 9px 0;
+  font-size:13px;color:var(--ink-2);
+}
+.note b{color:var(--ink)}
+
+/* ——— таблицы ——— */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{
+  text-align:left;font:600 11px/1.3 var(--sans);letter-spacing:.07em;
+  text-transform:uppercase;color:var(--pencil);
+  padding:0 8px 7px 0;border-bottom:1px solid var(--edge);
+}
+td{padding:8px 8px 8px 0;border-bottom:1px dashed var(--rule-soft);vertical-align:baseline}
+td.num{font-family:var(--mono);white-space:nowrap;color:var(--ink)}
+tr:last-child td{border-bottom:0}
+
+/* ——— замены ——— */
+.sub{padding:13px 0;border-bottom:1px dashed var(--rule-soft)}
+.sub:last-child{border-bottom:0}
+.sub h3{font:600 15px/1.3 var(--sans);margin:0 0 6px}
+.sub p{margin:0 0 4px;font-size:14.5px;color:var(--ink-2)}
+.sub p b{color:var(--ink);font-family:var(--mono);font-weight:600}
+.sub .warn{color:var(--margin);font-size:13px;margin-top:6px}
+.empty{color:var(--pencil);font-size:14px;padding:18px 0}
+
+.panel[hidden]{display:none}
+footer{text-align:center;color:var(--pencil);font-size:12px;padding:6px 0 0}
+footer a{color:var(--pencil)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header>
+  <div class="eyebrow">Тесто подошло</div>
+  <h1>Кухонная тетрадь</h1>
+  <p class="sub">Пересчёт под свою форму, стаканы в граммы и чем заменить то, что кончилось.</p>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="tab" role="tab" id="t-pan"   aria-selected="true"  aria-controls="p-pan">Форма</button>
+  <button class="tab" role="tab" id="t-meas"  aria-selected="false" aria-controls="p-meas">Меры</button>
+  <button class="tab" role="tab" id="t-subs"  aria-selected="false" aria-controls="p-subs">Замены</button>
+  <button class="tab" role="tab" id="t-chit"  aria-selected="false" aria-controls="p-chit">Шпаргалка</button>
+</nav>
+
+<main>
+
+<!-- ===================== ФОРМА ===================== -->
+<section class="panel" id="p-pan" role="tabpanel" aria-labelledby="t-pan">
+
+  <div class="sheet">
+    <h2>Рецепт написан не под мою форму</h2>
+    <p class="hint">Укажите форму из рецепта и свою. Считается по площади дна: слой теста останется той же толщины, а значит время и температура выпечки почти не изменятся.</p>
+
+    <div class="grp">
+      <div class="seg" id="mode">
+        <button type="button" data-mode="pan" aria-pressed="true">По форме</button>
+        <button type="button" data-mode="mult" aria-pressed="false">По порциям</button>
+      </div>
+    </div>
+
+    <div id="panMode">
+      <div class="grp">
+        <label class="f">Форма в рецепте</label>
+        <div class="fields">
+          <div class="fld" style="flex:1.6 1 128px"><span>какая</span>
+            <select id="s-shape" aria-label="Форма из рецепта">
+              <option value="circle">Круглая</option>
+              <option value="square">Квадратная</option>
+              <option value="rect">Прямоугольная</option>
+            </select>
+          </div>
+          <div class="fld" style="flex:1 1 76px"><span id="s-alab">диаметр</span>
+            <input type="number" id="s-a" value="24" min="1" max="200" inputmode="decimal" aria-label="Диаметр или сторона, см"></div>
+          <div class="fld" id="s-bwrap" hidden style="flex:1 1 76px"><span>вторая</span>
+            <input type="number" id="s-b" value="20" min="1" max="200" inputmode="decimal" aria-label="Вторая сторона, см"></div>
+          <div class="fld" style="flex:0 0 66px"><span>форм</span>
+            <input type="number" id="s-n" value="1" min="1" max="20" inputmode="numeric" aria-label="Сколько форм в рецепте"></div>
+        </div>
+      </div>
+
+      <div class="grp">
+        <label class="f">Моя форма</label>
+        <div class="fields">
+          <div class="fld" style="flex:1.6 1 128px"><span>какая</span>
+            <select id="t-shape" aria-label="Моя форма">
+              <option value="circle">Круглая</option>
+              <option value="square">Квадратная</option>
+              <option value="rect">Прямоугольная</option>
+            </select>
+          </div>
+          <div class="fld" style="flex:1 1 76px"><span id="t-alab">диаметр</span>
+            <input type="number" id="t-a" value="20" min="1" max="200" inputmode="decimal" aria-label="Диаметр или сторона, см"></div>
+          <div class="fld" id="t-bwrap" hidden style="flex:1 1 76px"><span>вторая</span>
+            <input type="number" id="t-b" value="20" min="1" max="200" inputmode="decimal" aria-label="Вторая сторона, см"></div>
+          <div class="fld" style="flex:0 0 66px"><span>форм</span>
+            <input type="number" id="t-n" value="1" min="1" max="20" inputmode="numeric" aria-label="Сколько у меня форм"></div>
+        </div>
+        <p class="hint" style="margin:7px 0 0">Размеры в сантиметрах, по дну формы.</p>
+      </div>
+
+      <svg class="diagram" id="diagram" viewBox="0 0 320 176" role="img" aria-label="Схема сравнения форм"></svg>
+    </div>
+
+    <div id="multMode" hidden>
+      <div class="grp">
+        <div class="row">
+          <div>
+            <label class="f" for="m-from">В рецепте порций</label>
+            <input type="number" id="m-from" value="8" min="1" max="200" inputmode="numeric">
+          </div>
+          <div>
+            <label class="f" for="m-to">Нужно порций</label>
+            <input type="number" id="m-to" value="12" min="1" max="200" inputmode="numeric">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="coef">
+      <b id="coefVal">0,69</b>
+      <span id="coefText">умножаем каждый ингредиент на этот коэффициент</span>
+    </div>
+  </div>
+
+  <div class="sheet">
+    <h2>Ингредиенты</h2>
+    <p class="hint">Вставьте список из рецепта — по одной строке. Строки без веса останутся как есть, а «180 °C» и «45 минут» не тронутся.</p>
+    <textarea id="recipe" spellcheck="false" aria-label="Список ингредиентов">150 г сливочного масла
+150 г сахара
+2 яйца
+150 г сметаны 20%
+220 г муки
+1 ч. л. разрыхлителя
+щепотка соли
+500 г слив
+Выпекать 45 минут при 180 °C</textarea>
+    <div class="row" style="margin-top:12px">
+      <div style="flex:2 1 180px"><button class="go" id="calc">Пересчитать</button></div>
+      <div style="flex:1 1 120px"><button class="ghost" style="width:100%" id="copy">Скопировать</button></div>
+    </div>
+    <div class="out" id="out" aria-live="polite"></div>
+  </div>
+
+</section>
+
+<!-- ===================== МЕРЫ ===================== -->
+<section class="panel" id="p-meas" role="tabpanel" aria-labelledby="t-meas" hidden>
+  <div class="sheet">
+    <h2>Стаканы и ложки в граммы</h2>
+    <p class="hint">Пересчёт идёт через плотность продукта, поэтому стакан муки и стакан мёда весят по-разному.</p>
+
+    <div class="grp">
+      <label class="f" for="prod">Продукт</label>
+      <select id="prod"></select>
+    </div>
+    <div class="grp">
+      <div class="row">
+        <div style="flex:0 0 96px">
+          <label class="f" for="qty">Сколько</label>
+          <input type="number" id="qty" value="1" min="0" step="0.25" inputmode="decimal">
+        </div>
+        <div>
+          <label class="f" for="unit">Чего</label>
+          <select id="unit">
+            <option value="250">стакан 250 мл</option>
+            <option value="200">стакан гранёный 200 мл</option>
+            <option value="15">столовая ложка</option>
+            <option value="5">чайная ложка</option>
+            <option value="g">граммы</option>
+            <option value="ml">миллилитры</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="out" id="measOut" aria-live="polite"></div>
+
+    <div class="note">
+      <b>Ложки — вровень с краем, без горки.</b> С горкой сыпучего входит примерно в полтора раза больше. Муку набирайте ложкой и снимайте излишек ножом: если зачерпнуть стаканом и утрамбовать, в тот же стакан войдёт на 20–25 г больше, и тесто выйдет плотным.
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЗАМЕНЫ ===================== -->
+<section class="panel" id="p-subs" role="tabpanel" aria-labelledby="t-subs" hidden>
+  <div class="sheet">
+    <h2>Чем заменить</h2>
+    <p class="hint">Замены, которые работают в домашней выпечке. Начните печатать название продукта.</p>
+    <div class="grp"><input type="search" id="subsSearch" placeholder="яйцо, сметана, разрыхлитель…" aria-label="Поиск по заменам"></div>
+    <div id="subsList"></div>
+  </div>
+</section>
+
+<!-- ===================== ШПАРГАЛКА ===================== -->
+<section class="panel" id="p-chit" role="tabpanel" aria-labelledby="t-chit" hidden>
+
+  <div class="sheet">
+    <h2>Температура и время</h2>
+    <p class="hint">Ориентиры для режима «верх-низ» без конвекции. С конвекцией снижайте температуру на 20 °C.</p>
+    <table>
+      <thead><tr><th>Изделие</th><th>Температура</th><th>Время</th></tr></thead>
+      <tbody>
+        <tr><td>Бисквит, 22–24 см</td><td class="num">170 °C</td><td class="num">35–45 мин</td></tr>
+        <tr><td>Шарлотка, шоколадный пирог</td><td class="num">180 °C</td><td class="num">40–50 мин</td></tr>
+        <tr><td>Пирог с фруктами</td><td class="num">180 °C</td><td class="num">45–55 мин</td></tr>
+        <tr><td>Песочный тарт (вслепую)</td><td class="num">190 °C</td><td class="num">15–20 мин</td></tr>
+        <tr><td>Дрожжевые булочки</td><td class="num">180 °C</td><td class="num">20–25 мин</td></tr>
+        <tr><td>Пирожки в духовке</td><td class="num">190 °C</td><td class="num">20–25 мин</td></tr>
+        <tr><td>Хлеб в форме</td><td class="num">200 °C</td><td class="num">35–45 мин</td></tr>
+        <tr><td>Печенье песочное</td><td class="num">180 °C</td><td class="num">12–15 мин</td></tr>
+        <tr><td>Безе</td><td class="num">90–100 °C</td><td class="num">90–120 мин</td></tr>
+        <tr><td>Меренговый рулет</td><td class="num">150 °C</td><td class="num">25–30 мин</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Почти все бытовые духовки врут, чаще в большую сторону. Термометр за 300 рублей снимает половину вопросов к рецептам.</div>
+  </div>
+
+  <div class="sheet">
+    <h2>Сколько чего в штуке</h2>
+    <table>
+      <tbody>
+        <tr><td>Яйцо С1 без скорлупы</td><td class="num">≈ 55 г</td></tr>
+        <tr><td>— из них белок</td><td class="num">≈ 35 г</td></tr>
+        <tr><td>— из них желток</td><td class="num">≈ 20 г</td></tr>
+        <tr><td>Пачка сливочного масла</td><td class="num">180 или 200 г</td></tr>
+        <tr><td>Пакетик разрыхлителя</td><td class="num">10 г</td></tr>
+        <tr><td>Пакетик сухих дрожжей</td><td class="num">7 или 11 г</td></tr>
+        <tr><td>Сухие дрожжи → свежие</td><td class="num">×3</td></tr>
+        <tr><td>Пакетик ванильного сахара</td><td class="num">8–10 г</td></tr>
+        <tr><td>Банка сгущёнки</td><td class="num">370 г</td></tr>
+        <tr><td>Лимон средний: сок</td><td class="num">40–50 мл</td></tr>
+        <tr><td>Лимон средний: цедра</td><td class="num">1 ст. л.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sheet">
+    <h2>Сколько теста входит в форму</h2>
+    <p class="hint">Для бисквита и заливных пирогов: заполняйте форму не выше двух третей.</p>
+    <table>
+      <thead><tr><th>Круглая форма</th><th>Площадь дна</th><th>Теста</th></tr></thead>
+      <tbody>
+        <tr><td>16 см</td><td class="num">201 см²</td><td class="num">≈ 450 г</td></tr>
+        <tr><td>18 см</td><td class="num">254 см²</td><td class="num">≈ 570 г</td></tr>
+        <tr><td>20 см</td><td class="num">314 см²</td><td class="num">≈ 700 г</td></tr>
+        <tr><td>22 см</td><td class="num">380 см²</td><td class="num">≈ 850 г</td></tr>
+        <tr><td>24 см</td><td class="num">452 см²</td><td class="num">≈ 1000 г</td></tr>
+        <tr><td>26 см</td><td class="num">531 см²</td><td class="num">≈ 1180 г</td></tr>
+        <tr><td>28 см</td><td class="num">616 см²</td><td class="num">≈ 1370 г</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+</main>
+
+<footer>Сообщество «Тесто подошло»</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ─────────── VK Bridge без библиотеки ─────────── */
+function vk(handler, params){
+  params = params || {};
+  try{
+    if(window.AndroidBridge && typeof window.AndroidBridge[handler]==="function"){
+      window.AndroidBridge[handler](JSON.stringify(params));
+    }else if(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers[handler]){
+      window.webkit.messageHandlers[handler].postMessage(params);
+    }else if(window.parent !== window){
+      window.parent.postMessage({handler:handler, params:params, type:"vk-connect"}, "*");
+    }
+  }catch(e){}
+}
+vk("VKWebAppInit");
+
+function applyScheme(s){
+  var dark = /dark|space_gray|vkcom_dark/.test(String(s||""));
+  document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+}
+try{ applyScheme(new URLSearchParams(location.search).get("scheme")); }catch(e){}
+window.addEventListener("message", function(e){
+  var d = e.data;
+  if(d && d.type==="VKWebAppUpdateConfig" && d.data){
+    applyScheme(d.data.scheme || d.data.appearance);
+  }
+});
+
+var $ = function(s){ return document.querySelector(s); };
+var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+/* ─────────── Закладки ─────────── */
+$$(".tab").forEach(function(tab){
+  tab.addEventListener("click", function(){
+    $$(".tab").forEach(function(t){
+      var on = t===tab;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      $("#"+t.getAttribute("aria-controls")).hidden = !on;
+    });
+    window.scrollTo({top:0, behavior:"instant" in window ? "auto" : "auto"});
+  });
+});
+
+/* ─────────── Числа ─────────── */
+var GLYPH = {"½":0.5,"¼":0.25,"¾":0.75,"⅓":1/3,"⅔":2/3,"⅛":0.125,"⅜":0.375,"⅝":0.625,"⅞":0.875};
+
+function parseNum(t){
+  t = String(t).trim();
+  if(GLYPH[t] !== undefined) return GLYPH[t];
+  var mixed = t.match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+  if(mixed) return +mixed[1] + (+mixed[2])/(+mixed[3]);
+  var frac = t.match(/^(\d+)\s*\/\s*(\d+)$/);
+  if(frac) return (+frac[1])/(+frac[2]);
+  return parseFloat(t.replace(",", "."));
+}
+
+function roundBy(x, step){ return Math.round(x/step)*step; }
+
+function nice(x, kind){
+  if(!isFinite(x)) return "—";
+  if(kind === "spoon"){
+    x = x < 0.25 ? roundBy(x, 0.125) : roundBy(x, 0.25);
+  }else if(kind === "piece"){
+    x = roundBy(x, 0.5);
+  }else{
+    if(x >= 100) x = roundBy(x, 5);
+    else if(x >= 20) x = roundBy(x, 1);
+    else if(x >= 2)  x = roundBy(x, 0.5);
+    else x = roundBy(x, 0.1);
+  }
+  return show(x);
+}
+
+function show(x){
+  var whole = Math.floor(x + 1e-9);
+  var rest = +(x - whole).toFixed(3);
+  var glyph = {0.125:"⅛",0.25:"¼",0.333:"⅓",0.375:"⅜",0.5:"½",0.625:"⅝",0.667:"⅔",0.75:"¾",0.875:"⅞"}[rest];
+  if(glyph) return (whole ? whole : "") + glyph;
+  var v = +x.toFixed(2);
+  return String(v).replace(".", ",");
+}
+
+/* ─────────── Разбор строки рецепта ─────────── */
+var UNIT  = /^(г(?![а-яё])|гр(?![а-яё])|грамм|кг(?![а-яё])|мл(?![а-яё])|л(?![а-яё])|ст\.?\s?л|столов|ч\.?\s?л|чайн|дес\.?\s?л|стакан|шт|щепот|пакетик|пачк|зубчик|капл|банк|уп(?![а-яё]))/i;
+var SKIP  = /^(°|c(?![a-z])|с(?![а-яё])|градус|мин|час|сек|см(?![а-яё])|мм(?![а-яё])|%|шаг)/i;
+var SPOON = /^(ст\.?\s?л|столов|ч\.?\s?л|чайн|дес\.?\s?л|стакан)/i;
+var PIECE = /^(шт|зубчик|банк|пакетик|пачк|уп(?![а-яё]))/i;
+
+function scaleLine(line, k){
+  var re = /(\d+\s+\d+\s*\/\s*\d+|\d+\s*\/\s*\d+|\d+(?:[.,]\d+)?|[½¼¾⅓⅔⅛⅜⅝⅞])/g;
+  var res = "", last = 0, first = true, touched = false, m;
+  while((m = re.exec(line)) !== null){
+    var tail = line.slice(m.index + m[0].length).replace(/^[\s.]*/, "");
+    var doScale = false, kind = "mass";
+    if(SKIP.test(tail)){
+      doScale = false;
+    }else if(UNIT.test(tail)){
+      doScale = true;
+      kind = SPOON.test(tail) ? "spoon" : (PIECE.test(tail) ? "piece" : "mass");
+    }else if(first && /^[а-яёa-z]/i.test(tail)){
+      doScale = true; kind = "piece";
+    }
+    res += line.slice(last, m.index);
+    if(doScale){
+      var v = parseNum(m[0]);
+      res += isFinite(v) ? nice(v*k, kind) : m[0];
+      touched = true;
+    }else{
+      res += m[0];
+    }
+    last = m.index + m[0].length;
+    first = false;
+  }
+  res += line.slice(last);
+  return {text:res, scaled:touched};
+}
+
+/* ─────────── Геометрия форм ─────────── */
+function area(shape, a, b){
+  if(shape === "circle") return Math.PI*a*a/4;
+  if(shape === "square") return a*a;
+  return a*b;
+}
+
+function readPan(p){
+  var shape = $("#"+p+"-shape").value;
+  var a = +$("#"+p+"-a").value || 0;
+  var b = +$("#"+p+"-b").value || 0;
+  var n = Math.max(1, +$("#"+p+"-n").value || 1);
+  return {shape:shape, a:a, b:b === 0 ? a : b, n:n, area:area(shape, a, shape==="rect" ? b : a)};
+}
+
+function drawDiagram(src, tgt){
+  var W = 320, H = 176, PAD = 26;
+  var dim = function(p){ return p.shape==="rect" ? Math.max(p.a,p.b) : p.a; };
+  var max = Math.max(dim(src), dim(tgt), 1);
+  var s = (H - PAD*2)/max;
+  var cx = W/2, cy = H/2;
+  var css = getComputedStyle(document.documentElement);
+  var ink = css.getPropertyValue("--pencil").trim() || "#888";
+  var red = css.getPropertyValue("--margin").trim() || "#c04";
+
+  function shapeEl(p, color, dash, fill){
+    var w = p.a*s, h = (p.shape==="rect" ? p.b : p.a)*s;
+    if(p.shape === "circle"){
+      return '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(w/2)+'" ry="'+(w/2)+'" fill="'+fill+'" stroke="'+color+'" stroke-width="1.5" stroke-dasharray="'+dash+'"/>';
+    }
+    return '<rect x="'+(cx-w/2)+'" y="'+(cy-h/2)+'" width="'+w+'" height="'+h+'" rx="3" fill="'+fill+'" stroke="'+color+'" stroke-width="1.5" stroke-dasharray="'+dash+'"/>';
+  }
+  function lbl(p){ return p.shape==="rect" ? (p.a+"×"+p.b) : (p.a+" см"); }
+
+  var svg =
+    shapeEl(src, ink, "5 4", "none") +
+    shapeEl(tgt, red, "0", "rgba(192,68,58,.10)") +
+    '<text x="8" y="16" font-family="ui-monospace,monospace" font-size="11" fill="'+ink+'">в рецепте '+lbl(src)+(src.n>1?" ×"+src.n:"")+'</text>' +
+    '<text x="8" y="'+(H-8)+'" font-family="ui-monospace,monospace" font-size="11" fill="'+red+'">у вас '+lbl(tgt)+(tgt.n>1?" ×"+tgt.n:"")+'</text>';
+  $("#diagram").innerHTML = svg;
+}
+
+/* ─────────── Коэффициент ─────────── */
+var mode = "pan";
+
+function coefficient(){
+  if(mode === "mult"){
+    var from = Math.max(1, +$("#m-from").value || 1);
+    var to = Math.max(1, +$("#m-to").value || 1);
+    return to/from;
+  }
+  var src = readPan("s"), tgt = readPan("t");
+  drawDiagram(src, tgt);
+  if(!src.area || !tgt.area) return 1;
+  return (tgt.area*tgt.n)/(src.area*src.n);
+}
+
+function refreshCoef(){
+  var k = coefficient();
+  $("#coefVal").textContent = "×" + (k >= 10 ? k.toFixed(1) : k.toFixed(2)).replace(".", ",");
+  var pct = Math.round((k-1)*100);
+  var t;
+  if(Math.abs(pct) < 3) t = "формы почти одинаковые — можно печь по рецепту как есть";
+  else if(pct > 0) t = "ингредиентов нужно больше на " + pct + " %";
+  else t = "ингредиентов нужно меньше на " + Math.abs(pct) + " %";
+  $("#coefText").textContent = t;
+  return k;
+}
+
+/* ─────────── Пересчёт ─────────── */
+var lastText = "";
+
+function calc(){
+  var k = refreshCoef();
+  var lines = $("#recipe").value.split("\n");
+  var html = "<ul>", plain = [], eggWarn = false;
+  var any = false;
+
+  lines.forEach(function(line){
+    if(!line.trim()){ return; }
+    var r = scaleLine(line, k);
+    if(r.scaled){
+      any = true;
+      if(/яй[цч]/i.test(line)) eggWarn = true;
+      var m = /^\s*[\d\u00bd\u00bc\u00be\u2153\u2154\u215b\u215c\u215d\u215e]/.test(r.text)
+        ? r.text.match(/^\s*([^\s]+(?:\s?(?:\u0433|\u0433\u0440|\u043a\u0433|\u043c\u043b|\u043b|\u0441\u0442\.?\s?\u043b\.?|\u0447\.?\s?\u043b\.?|\u0448\u0442\.?|\u0441\u0442\u0430\u043a\u0430\u043d[\u0430-\u044f\u0451]*))?)\s*(.*)$/)
+        : null;
+      if(m){ html += '<li><b>'+esc(m[1])+'</b><i>'+esc(m[2])+'</i></li>'; }
+      else  { html += '<li><i>'+esc(r.text)+'</i></li>'; }
+    }else{
+      html += '<li class="plain"><i>'+esc(r.text)+'</i></li>';
+    }
+    plain.push(r.text);
+  });
+  html += "</ul>";
+
+  if(!any){
+    $("#out").innerHTML = '<p class="empty">В списке не нашлось ни одного веса. Напишите ингредиенты по одному в строке, например: 200 г муки.</p>';
+    lastText = "";
+    return;
+  }
+
+  var tail = "<b>Время и температура из рецепта не меняются</b> — слой теста остался той же толщины. Готовность проверяйте зубочисткой строго в центре.";
+  if(eggWarn){
+    tail += " Дробное количество яиц отмеряют так: взбить яйцо вилкой и отлить нужную часть, одно яйцо С1 без скорлупы — примерно 55 г.";
+  }
+  html += '<div class="note">' + tail + "</div>";
+
+  $("#out").innerHTML = html;
+  lastText = plain.join("\n");
+}
+
+function esc(s){
+  return String(s).replace(/[&<>"]/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];
+  });
+}
+
+/* ─────────── События вкладки «Форма» ─────────── */
+function toggleRect(p){
+  var v = $("#"+p+"-shape").value;
+  $("#"+p+"-bwrap").hidden = v !== "rect";
+  $("#"+p+"-alab").textContent = v === "circle" ? "диаметр" : (v === "square" ? "сторона" : "длина");
+}
+
+["s","t"].forEach(function(p){
+  $("#"+p+"-shape").addEventListener("change", function(){ toggleRect(p); refreshCoef(); });
+  ["a","b","n"].forEach(function(f){
+    $("#"+p+"-"+f).addEventListener("input", refreshCoef);
+  });
+});
+$("#m-from").addEventListener("input", refreshCoef);
+$("#m-to").addEventListener("input", refreshCoef);
+
+$$("#mode button").forEach(function(b){
+  b.addEventListener("click", function(){
+    mode = b.dataset.mode;
+    $$("#mode button").forEach(function(x){ x.setAttribute("aria-pressed", x===b ? "true" : "false"); });
+    $("#panMode").hidden = mode !== "pan";
+    $("#multMode").hidden = mode !== "mult";
+    refreshCoef();
+  });
+});
+
+$("#calc").addEventListener("click", calc);
+
+$("#copy").addEventListener("click", function(){
+  var btn = $("#copy");
+  if(!lastText){ btn.textContent = "Нечего копировать"; setTimeout(function(){ btn.textContent = "Скопировать"; }, 1600); return; }
+  var done = function(){ btn.textContent = "Скопировано"; setTimeout(function(){ btn.textContent = "Скопировать"; }, 1600); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(lastText).then(done, fallback);
+  }else fallback();
+  function fallback(){
+    var ta = document.createElement("textarea");
+    ta.value = lastText; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); done(); }
+    catch(e){ btn.textContent = "Скопируйте вручную"; setTimeout(function(){ btn.textContent = "Скопировать"; }, 2200); }
+    document.body.removeChild(ta);
+  }
+});
+
+/* ─────────── Меры ─────────── */
+var PRODUCTS = [
+  ["Мука пшеничная", 0.53],
+  ["Мука ржаная", 0.50],
+  ["Мука цельнозерновая", 0.55],
+  ["Мука кукурузная", 0.62],
+  ["Крахмал картофельный", 0.60],
+  ["Сахар-песок", 0.80],
+  ["Сахарная пудра", 0.53],
+  ["Сахар коричневый, утрамбованный", 0.90],
+  ["Соль мелкая", 1.20],
+  ["Сода пищевая", 0.90],
+  ["Разрыхлитель", 0.80],
+  ["Дрожжи сухие", 0.55],
+  ["Какао-порошок", 0.45],
+  ["Манная крупа", 0.76],
+  ["Овсяные хлопья", 0.36],
+  ["Рис", 0.85],
+  ["Мак", 0.62],
+  ["Изюм", 0.66],
+  ["Орехи молотые", 0.45],
+  ["Вода", 1.00],
+  ["Молоко", 1.03],
+  ["Кефир", 1.03],
+  ["Сметана 20 %", 0.98],
+  ["Сливки 33 %", 0.98],
+  ["Масло растительное", 0.92],
+  ["Масло сливочное растопленное", 0.91],
+  ["Мёд", 1.42],
+  ["Молоко сгущённое", 1.29],
+  ["Варенье", 1.30]
+];
+
+PRODUCTS.forEach(function(p, i){
+  var o = document.createElement("option");
+  o.value = i; o.textContent = p[0];
+  $("#prod").appendChild(o);
+});
+
+function measure(){
+  var d = PRODUCTS[+$("#prod").value][1];
+  var q = +$("#qty").value;
+  var u = $("#unit").value;
+  if(!isFinite(q) || q <= 0){
+    $("#measOut").innerHTML = '<p class="empty">Введите количество больше нуля.</p>';
+    return;
+  }
+  var ml;
+  if(u === "g") ml = q/d;
+  else if(u === "ml") ml = q;
+  else ml = q*(+u);
+  var g = ml*d;
+
+  var rows = [
+    ["Вес", show(roundBy(g, g >= 100 ? 5 : 1)) + " г"],
+    ["Объём", show(roundBy(ml, ml >= 100 ? 5 : 1)) + " мл"],
+    ["Стаканов 250 мл", show(roundBy(ml/250, 0.125))],
+    ["Стаканов 200 мл", show(roundBy(ml/200, 0.125))],
+    ["Столовых ложек", show(roundBy(ml/15, 0.25))],
+    ["Чайных ложек", show(roundBy(ml/5, 0.25))]
+  ];
+  var html = "<table><tbody>";
+  rows.forEach(function(r){ html += "<tr><td>"+r[0]+'</td><td class="num">'+r[1]+"</td></tr>"; });
+  html += "</tbody></table>";
+  $("#measOut").innerHTML = html;
+}
+
+$("#prod").addEventListener("change", measure);
+$("#qty").addEventListener("input", measure);
+$("#unit").addEventListener("change", measure);
+
+/* ─────────── Замены ─────────── */
+var SUBS = [
+  {t:"1 яйцо", o:["1 ст. л. молотого льняного семени + 3 ст. л. воды, настоять 10 минут",
+                  "60 г бананового или яблочного пюре",
+                  "50 г густого йогурта + ¼ ч. л. разрыхлителя"],
+   w:"Не сработает в бисквите и меренге: там яйца отвечают за подъём, а не за связку."},
+  {t:"1 ч. л. разрыхлителя", o:["¼ ч. л. соды + ½ ч. л. лимонного сока или уксуса"],
+   w:"Гасите соду прямо в тесте, а не в ложке: иначе весь газ уйдёт в воздух."},
+  {t:"Сметана, 200 г", o:["200 г густого йогурта без добавок","180 г кефира + 1 ст. л. муки","150 г творога, пробитого блендером с 2 ст. л. молока"]},
+  {t:"Кефир, 250 мл", o:["250 мл молока + 1 ст. л. лимонного сока, постоять 10 минут","200 мл йогурта + 50 мл воды"]},
+  {t:"Сливочное масло в тесте", o:["Маргарин 82 % — в песочном тесте даже надёжнее","Растительное масло, но только ¾ от объёма и только в кексах"],
+   w:"В слоёном и песочном тесте растительное масло не работает: не будет слоёв и рассыпчатости."},
+  {t:"Сахар, 100 г", o:["130 г мёда, при этом убрать 30 мл жидкости и снизить температуру на 10 °C","100 г коричневого сахара — выпечка станет темнее и влажнее"],
+   w:"Мёд горит быстрее сахара, следите за верхом."},
+  {t:"Молоко, 250 мл", o:["200 мл воды + 50 мл сливок","125 мл сгущёнки + 125 мл воды и минус 2 ст. л. сахара в рецепте","250 мл растительного молока — овсяное ведёт себя ближе всего к коровьему"]},
+  {t:"Мука высшего сорта, 100 г", o:["70 г муки + 30 г крахмала — для более нежного, рассыпчатого мякиша","100 г цельнозерновой + 15 мл дополнительной жидкости"]},
+  {t:"Сухие дрожжи, 7 г", o:["21 г свежих прессованных дрожжей"],
+   w:"Свежие сначала распустить в тёплой жидкости, сухие быстродействующие можно вмешать прямо в муку."},
+  {t:"Ванилин", o:["1 пакетик ванильного сахара (8–10 г)","1 ч. л. ванильного экстракта","семена ⅓ стручка ванили"]},
+  {t:"Пахта, 250 мл", o:["250 мл кефира","250 мл молока + 1 ст. л. уксуса, постоять 10 минут"]},
+  {t:"Крахмал, 1 ст. л. (для начинки)", o:["1 ст. л. муки, но начинка выйдет мутнее","1 ч. л. агар-агара — только для холодных начинок"]},
+  {t:"Сгущёнка в креме", o:["Варёная сгущёнка + 30 мл молока для мягкости","Сахарная пудра 1:1 с маслом и щепоткой соли"]},
+  {t:"Дрожжи — содой", o:[],
+   w:"Заменить нельзя. Сода даёт газ, но не даёт вкуса и структуры: булочки получатся плотными и с привкусом. Лучше отложить затею на завтра."}
+];
+
+function renderSubs(q){
+  q = (q||"").trim().toLowerCase();
+  var list = SUBS.filter(function(s){
+    if(!q) return true;
+    return (s.t + " " + s.o.join(" ") + " " + (s.w||"")).toLowerCase().indexOf(q) !== -1;
+  });
+  if(!list.length){
+    $("#subsList").innerHTML = '<p class="empty">Такого продукта в списке нет. Спросите в комментариях сообщества — подскажем и добавим.</p>';
+    return;
+  }
+  $("#subsList").innerHTML = list.map(function(s){
+    var body = s.o.map(function(x){ return "<p>→ " + esc(x) + "</p>"; }).join("");
+    var warn = s.w ? '<p class="warn">' + esc(s.w) + "</p>" : "";
+    return '<div class="sub"><h3>' + esc(s.t) + "</h3>" + body + warn + "</div>";
+  }).join("");
+}
+
+$("#subsSearch").addEventListener("input", function(e){ renderSubs(e.target.value); });
+
+/* ─────────── Старт ─────────── */
+toggleRect("s"); toggleRect("t");
+refreshCoef();
+calc();
+measure();
+renderSubs("");
+
+})();
+</script>
+</body>
+</html>
